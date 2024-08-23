@@ -1,0 +1,12 @@
+<html><body style='margin: 0; padding: 0; font-family: Arial, sans-serif; '>
+  <div style='position: relative; padding: 20px;'>
+    <div style='margin-top: 10px; color:black !important'>
+      Hello,<br/><br/>
+      We’ve received a request to reset your EasyMed password.<br/><br/></div>
+    <div> <span style = 'color: black'> Access Token: <b>"+accessToken+"</b></span></br></br></br></div>
+<div style = 'color: black'>Your password should have 8 or more characters with at least one uppercase letter, lowercase letter, number and special character. <br/><br/>
+  If you have any queries, please contact the help desk. </div>  <br/><br/>
+<div style = 'color : black'> Kind regards,</br></br></div>
+<div style = 'color : black'>EasyMed</br></br></br></div>
+</div></br><div><img src='cid:logoImage' alt='Logo' style='position: absolute;  width: 100px; height: auto;' />
+</div></div></body></html>
