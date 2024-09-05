@@ -8,13 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-import com.example.Ticket.Booking.model.AppointmentDetails;
+import com.example.Ticket.Booking.model.*;
 import com.itextpdf.text.DocumentException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import com.example.Ticket.Booking.model.ForgotPasswordRequest;
-import com.example.Ticket.Booking.model.ForgotRequest;
-import com.example.Ticket.Booking.model.User;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamSource;
@@ -108,6 +105,18 @@ public class EmailService {
         helper.setSubject("EasyMed login OTP.");
         helper.setTo(user.getEmail());
         String emailContent = EmailTemplate.getLoginSuccess(user,otp);
+        helper.setText(emailContent, true);
+        FileSystemResource res = new FileSystemResource(new File("src/main/resources/static/images/logo.png"));
+        helper.addInline("logoImage", res);
+        javaMailSender.send(mimeMessage);
+    }
+
+    public void sendOTPEmailForScheduler(SchedulerOTP hospitalMail, String otp, String hospitalEmail) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        helper.setSubject("EasyMed login OTP.");
+        helper.setTo(hospitalEmail);
+        String emailContent = EmailTemplate.sendOtp(hospitalMail,otp);
         helper.setText(emailContent, true);
         FileSystemResource res = new FileSystemResource(new File("src/main/resources/static/images/logo.png"));
         helper.addInline("logoImage", res);

@@ -31,6 +31,12 @@ public class HospitalController {
     @Autowired
     HospitalDetailsService hospitalDetailsService;
 
+    @GetMapping(value = "/hospitalDetails")
+    public ResponseEntity<List<HospitalDetails>> fetchHsptlDetails() {
+
+        List<HospitalDetails> hospitalDtls = hospitalDetailsService.getHsptlDtls();
+        return new ResponseEntity<>(hospitalDtls, HttpStatus.OK);
+    }
     @GetMapping(value = "/locations")
     public ResponseEntity<List<String>> getLocations() {
         List<Locations> locations = locationRepository.findAll();
@@ -38,19 +44,21 @@ public class HospitalController {
         return new ResponseEntity<>(locList, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/hospitalDetails")
-    public ResponseEntity<Map<String, List<HospitalDtl>>> fetchHsptlDetails(@Valid @RequestBody List<String> location) {
+    @GetMapping(value="/filterDtls/{location}")
+    public ResponseEntity<FilterDetails> getFltrDtlsByLoc(@PathVariable String location){
+        FilterDetails filterDetails = hospitalDetailsService.getFltrDtlsByLocation(location);
+        return new ResponseEntity<>(filterDetails, HttpStatus.OK);
+    }
 
-        Map<String,List<HospitalDtl>> hospitalDtls = hospitalDetailsService.getHsptlDtls(location);
-
-
-
-        return new ResponseEntity<>(hospitalDtls, HttpStatus.OK);
+    @PostMapping(value = "/filteredDtls")
+    public ResponseEntity<HospitalDetails> getFilteredHospitalDetails(@Valid @RequestBody FilterDetails filterDetails){
+        HospitalDetails hospitalDetailsList = hospitalDetailsService.getHospitalDetailsByFilter(filterDetails);
+        return new ResponseEntity<>(hospitalDetailsList, HttpStatus.OK);
     }
 
     @PostMapping(value = "/specialistName")
-    public ResponseEntity<Map<String, Set<String>>> getSpecalistDetails(@Valid @RequestBody List<String> location){
-        Map<String, Set<String>> specialistDtls = hospitalDetailsService.getListOfSpclName(location);
+    public ResponseEntity <Set<String>> getSpecalistDetails(@Valid @RequestBody String location){
+        Set<String> specialistDtls = hospitalDetailsService.getListOfSpclName(location);
 
         return new ResponseEntity<>(specialistDtls, HttpStatus.OK);
     }

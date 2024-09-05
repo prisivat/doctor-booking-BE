@@ -1,6 +1,8 @@
 package com.example.Ticket.Booking.service;
 
 import com.example.Ticket.Booking.model.AppointmentDetails;
+import com.example.Ticket.Booking.model.SchedulerMailOtpDetails;
+import com.example.Ticket.Booking.model.SchedulerOTP;
 import com.example.Ticket.Booking.model.User;
 
 public class EmailTemplate {
@@ -157,6 +159,23 @@ public class EmailTemplate {
                 "                                 Hello "+user.getFirstName()+",<br/><br/>  " +
                 "                                 <br/><br/></div>  " +
                 "                               <div> <span style = 'color: black'> Use this OTP : <b>"+otp+" </b> to login </span></br></br></br></div> " +
+                "                                 <div style = 'color: black'> 'Note: OTP valid for 2 minutes. ' <br/><br/> <br/><br/>  " +
+                "                                 If you have any queries, please contact the help desk. </div>  <br/><br/>  " +
+                "                                <div style = 'color : black'> Kind regards,</br></br></div>  " +
+                "                                 <div style = 'color : black'>EasyMed</br></br></br></div>  " +
+                "                                 </div></br><div><img src='cid:logoImage' alt='Logo' style='position: absolute;  width: 100px; height: auto;' />  " +
+                "                                 </div></div></body></html>";
+    }
+
+    public static String sendOtp(SchedulerOTP schedulerMailOtpDetails, String otp) {
+
+        return "<html><body style='margin: 0; padding: 0; font-family: Arial, sans-serif; '>   " +
+                "                 <div style='position: relative; padding: 20px;'>   " +
+                "                     " +
+                "                 <div style='margin-top: 10px; color:black !important'>  " +
+                "                                 Hello "+schedulerMailOtpDetails.getHospitalName()+",<br/><br/>  " +
+                "                                 <br/><br/></div>  " +
+                "                               <div> <span style = 'color: black'> Use this OTP : <b>"+otp+" </b> to Register/Login </span></br></br></br></div> " +
                 "                                 <div style = 'color: black'> 'Note: OTP valid for 2 minutes. ' <br/><br/> <br/><br/>  " +
                 "                                 If you have any queries, please contact the help desk. </div>  <br/><br/>  " +
                 "                                <div style = 'color : black'> Kind regards,</br></br></div>  " +

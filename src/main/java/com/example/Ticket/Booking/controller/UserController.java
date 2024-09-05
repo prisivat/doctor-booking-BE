@@ -135,6 +135,19 @@ public class UserController {
         return new ResponseEntity<>("Password Reset successfully", HttpStatus.OK);
     }
 
+    @PostMapping("/change-username")
+    public ResponseEntity<String> changeUserName(@Valid @RequestBody ChangeUserName changeUserName) throws Exception {
+        try{
+            userService.changeUserName(changeUserName);
+        }catch (UserNameAlreadyExistException e){
+            return new ResponseEntity<>("UserName Already Exist, Please try with different one.", HttpStatus.BAD_REQUEST);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>("Please provide valid userName.", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>("User name changed successfully", HttpStatus.OK);
+    }
 
 
-}
+
+    }

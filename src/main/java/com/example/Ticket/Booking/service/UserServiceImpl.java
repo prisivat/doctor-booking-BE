@@ -1,15 +1,21 @@
 package com.example.Ticket.Booking.service;
 
 import com.example.Ticket.Booking.Exception.*;
+import com.example.Ticket.Booking.dao.AppointmentDetailsRepository;
 import com.example.Ticket.Booking.dao.ForgotPasswordReqRepository;
 import com.example.Ticket.Booking.dao.OTPRepository;
 import com.example.Ticket.Booking.dao.UserRepository;
 import com.example.Ticket.Booking.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
@@ -36,6 +42,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private AppointmentDetailsRepository appointmentDetailsRepository;
 
     @Override
     public void newUser(User user) {
@@ -69,7 +78,14 @@ public class UserServiceImpl implements UserService{
         }
         otp.setOtp(getOTP());
         otp.setUserName(user.getUserName());
-        otp.setCreatedAt(LocalDateTime.now());
+
+        List<OTP> userExist = otpRepository.findByUserName(user.getUserName());
+        if(userExist.size() > 0){
+            otpRepository.deleteByUserName(user.getUserName());
+        }
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+        otp.setCreatedAt(String.valueOf(localDateTime));
         otpRepository.save(otp);
         return user;
     }
@@ -93,9 +109,12 @@ public class UserServiceImpl implements UserService{
         if (Objects.isNull(user)){
             throw new PasswordInValidException("User Name "+forgotRequest.getUserName()+" not found, Please provide the valid user name.");
         }
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+        LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
+
         forgotRequest.setToken(generateToken());
         forgotRequest.setUser(user);
-        forgotRequest.setCreatedAt(LocalDateTime.now());
+        forgotRequest.setCreatedAt(localDateTime);
         forgotPasswordReqRepository.save(forgotRequest);
         return forgotRequest;
     }
@@ -128,13 +147,40 @@ public class UserServiceImpl implements UserService{
 
         if(!validateOtp.isPresent()){
             throw new UserNotFoundException("OTP is Invalid.");
-        } else if(validateOtp.get().getCreatedAt().plusMinutes(2).isBefore(now)){
+        } else if(LocalDateTime.parse(validateOtp.get().getCreatedAt()).plusMinutes(2).isBefore(now)){
             LocalDateTime now1 = LocalDateTime.now().minusMinutes(2);
             otpRepository.deleteByCreatedAtBefore(now1);
             throw new OTPExpiredException("OTP has Expired.");
         }
 
     }
+
+    @Override
+    public void changeUserName(ChangeUserName changeUserName) {
+        User user = userRepository.findByUserName(changeUserName.getOldUserName());
+        if(Objects.isNull(user)){
+            throw new UserNotFoundException("Please provide the valid user name.");
+        }
+        User newUser = userRepository.findByUserName(changeUserName.getNewUserName());
+
+        if(Objects.nonNull(newUser)){
+            throw new UserNameAlreadyExistException("UserName Already Exist, Please try with different one.");
+        }
+        userRepository.deleteById(user.getUserName());
+        user.setUserName(changeUserName.getNewUserName());
+        userRepository.save(user);
+        List<AppointmentDetails> appointmentDetails = appointmentDetailsRepository.findByUserName(changeUserName.getOldUserName());
+         if(appointmentDetails.size() > 0){
+            appointmentDetails.forEach(appointmentDetails1 -> {
+                AppointmentDetails appointmentDetails2 = appointmentDetails1;
+                 appointmentDetailsRepository.deleteByUserName(appointmentDetails1.getUserName());
+                appointmentDetails2.setUserName(changeUserName.getNewUserName());
+                 appointmentDetailsRepository.save(appointmentDetails2);
+             });
+        }
+
+    }
+
     private String generateToken() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder stringBuilder;

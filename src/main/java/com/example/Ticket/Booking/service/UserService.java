@@ -15,4 +15,6 @@ public interface UserService {
     String resetPassword(ResetPassword resetPassword);
 
     void verifyOtp(OTP otp);
+
+    void changeUserName(ChangeUserName changeUserName);
 }
