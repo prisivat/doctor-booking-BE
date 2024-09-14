@@ -12,7 +12,11 @@ public interface AppointmentDetailsRepository extends MongoRepository<Appointmen
 
     List<AppointmentDetails> findByUserName(String userName);
 
-    List<AppointmentDetails> findByUserNameAndDateAfter(String userName, String date);
+    List<AppointmentDetails> findByUserNameAndDateGreaterThanEqual(String userName, String date);
 
     void deleteByUserName(String userName);
+
+    void deleteByBookingIdAndPatientName(String bookingId, String patientName);
+
+    AppointmentDetails findByBookingIdAndPatientName(String bookingId, String patientName);
 }

@@ -1,10 +1,5 @@
 package com.example.Ticket.Booking.controller;
 
-import com.example.Ticket.Booking.Exception.EmailAndPhoneNumberAlreadyExistsException;
-import com.example.Ticket.Booking.Exception.LocationInValidException;
-import com.example.Ticket.Booking.Exception.PasswordInValidException;
-import com.example.Ticket.Booking.Exception.PasswordIncorrectException;
-import com.example.Ticket.Booking.dao.HospitalDetailsRepository;
 import com.example.Ticket.Booking.dao.LocationRepository;
 import com.example.Ticket.Booking.model.*;
 import com.example.Ticket.Booking.service.HospitalDetailsService;

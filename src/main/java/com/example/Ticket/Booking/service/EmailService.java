@@ -87,12 +87,15 @@ public class EmailService {
         javaMailSender.send(mimeMessage);
     }
 
-    public void sentAppointmentDtlsToHospital(AppointmentDetails appointmentDetails) throws MessagingException, IOException, TemplateException {
+    public void sentAppointmentDtlsToHospital(AppointmentDetails appointmentDetails) throws MessagingException, IOException, TemplateException, DocumentException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         helper.setSubject("Your upcoming Appointments.");
         helper.setTo(appointmentDetails.getSchedulerEmail());
         String emailContent = EmailTemplate.getAppoinmentConfmDoctorTemplate(appointmentDetails);
+        byte[] pdfContent = PdfGenerator.generatePDF(appointmentDetails);
+        InputStreamSource attachment = new ByteArrayResource(pdfContent);
+        helper.addAttachment(appointmentDetails.getBookingId()+".pdf", attachment);
         helper.setText(emailContent, true);
         FileSystemResource res = new FileSystemResource(new File("src/main/resources/static/images/logo.png"));
         helper.addInline("logoImage", res);
@@ -117,6 +120,60 @@ public class EmailService {
         helper.setSubject("EasyMed login OTP.");
         helper.setTo(hospitalEmail);
         String emailContent = EmailTemplate.sendOtp(hospitalMail,otp);
+        helper.setText(emailContent, true);
+        FileSystemResource res = new FileSystemResource(new File("src/main/resources/static/images/logo.png"));
+        helper.addInline("logoImage", res);
+        javaMailSender.send(mimeMessage);
+    }
+
+    public void sendCancelledMailToPatient(SchedulerHospitalTiming schedulerHospitalTiming1, User user) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        helper.setSubject("Appointment Cancelled.");
+        helper.setTo(user.getEmail());
+        String emailContent = EmailTemplate.getCancelAppointmentDtl(schedulerHospitalTiming1);
+        helper.setText(emailContent, true);
+        FileSystemResource res = new FileSystemResource(new File("src/main/resources/static/images/logo.png"));
+        helper.addInline("logoImage", res);
+        javaMailSender.send(mimeMessage);
+    }
+
+    public void sendCancelledMailToHospital(SchedulerHospitalTiming schedulerHospitalTiming, String email) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        helper.setSubject("Appointment Cancellation for " + schedulerHospitalTiming.getBookingId());
+        helper.setTo(email);
+        String emailContent = EmailTemplate.getCancelAppointmentDtlToHospital(schedulerHospitalTiming);
+        helper.setText(emailContent, true);
+        FileSystemResource res = new FileSystemResource(new File("src/main/resources/static/images/logo.png"));
+        helper.addInline("logoImage", res);
+        javaMailSender.send(mimeMessage);
+    }
+
+    public void sentRescheduleAppointmentDtlsToPatient(AppointmentDetails appointmentDetails, User user) throws MessagingException, IOException, TemplateException, DocumentException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        helper.setSubject("Appointment has been Rescheduled.");
+        helper.setTo(user.getEmail());
+        String emailContent = EmailTemplate.getRescheduleAppoinmentConfmTemplate(appointmentDetails);
+        byte[] pdfContent = PdfGenerator.generatePDF(appointmentDetails);
+        InputStreamSource attachment = new ByteArrayResource(pdfContent);
+        helper.addAttachment(appointmentDetails.getBookingId()+".pdf", attachment);
+        helper.setText(emailContent, true);
+        FileSystemResource res = new FileSystemResource(new File("src/main/resources/static/images/logo.png"));
+        helper.addInline("logoImage", res);
+        javaMailSender.send(mimeMessage);
+    }
+
+    public void sentRescheduleAppointmentDtlsToHospital(AppointmentDetails appointmentDetails) throws MessagingException, IOException, TemplateException, DocumentException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+        helper.setSubject("Appointment has been Rescheduled.");
+        helper.setTo(appointmentDetails.getSchedulerEmail());
+        String emailContent = EmailTemplate.getRescheduleAppoinmentConfmDoctorTemplate(appointmentDetails);
+        byte[] pdfContent = PdfGenerator.generatePDF(appointmentDetails);
+        InputStreamSource attachment = new ByteArrayResource(pdfContent);
+        helper.addAttachment(appointmentDetails.getBookingId()+".pdf", attachment);
         helper.setText(emailContent, true);
         FileSystemResource res = new FileSystemResource(new File("src/main/resources/static/images/logo.png"));
         helper.addInline("logoImage", res);

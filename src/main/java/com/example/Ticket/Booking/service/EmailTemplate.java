@@ -1,9 +1,6 @@
 package com.example.Ticket.Booking.service;
 
-import com.example.Ticket.Booking.model.AppointmentDetails;
-import com.example.Ticket.Booking.model.SchedulerMailOtpDetails;
-import com.example.Ticket.Booking.model.SchedulerOTP;
-import com.example.Ticket.Booking.model.User;
+import com.example.Ticket.Booking.model.*;
 
 public class EmailTemplate {
 
@@ -182,5 +179,120 @@ public class EmailTemplate {
                 "                                 <div style = 'color : black'>EasyMed</br></br></br></div>  " +
                 "                                 </div></br><div><img src='cid:logoImage' alt='Logo' style='position: absolute;  width: 100px; height: auto;' />  " +
                 "                                 </div></div></body></html>";
+    }
+
+    public static String getCancelAppointmentDtl(SchedulerHospitalTiming schedulerHospitalTiming) {
+
+        return "   <html lang='en'>    " +
+                "     <head>             <meta charset='UTF-8'>     " +
+                "            <meta name='viewport' content='width=device-width, initial-scale=1.0'>    " +
+                "                 <title>Appointment Cancelled</title>                     <style>                    " +
+                "     body {                             font - family: Arial, sans-serif;                    " +
+                "     background-color: #f4f4f4;                         margin: 0;                         padding: 20px;   " +
+                "" +
+                "      }                         .container {                             background - color: #ffffff;     " +
+                "                    padding: 20px;                         margin: auto;                      " +
+                "   max-width: 600px;                         border-radius: 8px;                      " +
+                "   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);         }                         h2 {                             color: #333333;         }                         p {                             line - height: 1.6;                         color: #555555;         }                         .appointment-details {                             margin: 20px 0;         }                         .appointment-details p {                             margin: 5px 0;         }    " +
+                "                     .footer {                             margin - top: 30px;                         font-size: 12px;         " +
+                "                color: #888888;         }                     </style>                 </head>                 <body> " +
+                "                    <div class='container'>                         <h2>Your EasyMed Appointment Cancelled  – "+schedulerHospitalTiming.getDate() +" " + schedulerHospitalTiming.getTime()+"</h2>                          <p>Dear "+schedulerHospitalTiming.getPatientName()+",</p>                         " +
+                " <p>Your Booking for "+ schedulerHospitalTiming.getHospitalName()+" is Cancelled Successfully. We are pleased to confirm your cancelled appointment as follows:</p>   " +
+                "                       <div class='appointment-details'>                             <p><strong>Booking ID:</strong> "+schedulerHospitalTiming.getBookingId()+"</p>   <p><strong>Date:</strong> "+schedulerHospitalTiming.getDate()+"</p>  " +
+                "                           <p><strong>Time:</strong> "+schedulerHospitalTiming.getTime()+"</p>                         " +
+                "    <p><strong>Doctor/Provider:</strong> Dr. "+schedulerHospitalTiming.getDocName()+"</p>                           " +
+                "  <p><strong>Department/Specialty:</strong> "+schedulerHospitalTiming.getSpecialist()+"</p>                           " +
+                "  <p><strong>Location:</strong> "+schedulerHospitalTiming.getLocation()+"</p>                         </div>       " +
+                "                   <p>Feel free to book again, using EasyMed.</p>         " +
+                "                 <p>If you have any questions or need to reschedule, please contact us at 044 - 24356282 or email EasyMed@gmail.com.</p>  " +
+                "                        <p>We look forward to seeing you soon!</p>                        " +
+                "   <div style='color : black'> Kind regards,</br></br ></div >                 <div style='color : black'>EasyMed</br></br ></br ></div >" +
+                " </br > <div><img src='cid:logoImage' alt='Logo' style='position: absolute;  width: 100px; height: auto;' /></div>     " +
+                "<div class='footer'>         <p>This is an automated message, please do not reply to this email.</p>     </div> </div> </body ></html >";
+    }
+
+    public static String getCancelAppointmentDtlToHospital(SchedulerHospitalTiming schedulerHospitalTiming) {
+
+        return "   <!DOCTYPE html>  <html lang=  'en  '>  " +
+                "     <head>             <meta charset='UTF-8'/>      " +
+                "                            <meta name='viewport' content='width=device-width, initial-scale=1.0'>     " +
+                "                                 <title>Appointment Cancelled</title>                     <style>                     " +
+                "                     body {                             font - family: Arial, sans-serif;                     " +
+                "                     background-color: #f4f4f4;                         margin: 0;                         padding: 20px;    " +
+                "                 " +
+                "                      }                         .container {                             background - color: #ffffff;      " +
+                "                                    padding: 20px;                         margin: auto;                       " +
+                "                   max-width: 600px;                         border-radius: 8px;                       " +
+                "                   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);         }                         h2 {                             color: #333333;         }                         p {                             line - height: 1.6;                         color: #555555;         }                         .appointment-details {                             margin: 20px 0;         }                         .appointment-details p {                             margin: 5px 0;         }     " +
+                "                                     .footer {                             margin - top: 30px;                         font-size: 12px;          " +
+                "                                color: #888888;         }                     </style>                 </head>   <body>     " +
+                " <div class=  'container  '>          <h2>Appointment Cancelled</h2>            <p>Hello,</p>        " +
+                "    <p>I hope you’re doing well. Scheduled Appointment for the following patient has been cancelled:</p>           " +
+                " <div class=  'appointment-details  '>              <p><strong>Patient Name:</strong> "+schedulerHospitalTiming.getPatientName()+"</p>             " +
+                " <p><strong>Preferred Date:</strong> "+schedulerHospitalTiming.getDate()+"</p>              <p><strong>Preferred Time:</strong> "+schedulerHospitalTiming.getTime()+"</p>        " +
+                "      <p><strong>Doctor/Provider:</strong> Dr. "+schedulerHospitalTiming.getDocName()+"</p>              <p><strong>Department/Specialty:</strong>" +
+                " "+schedulerHospitalTiming.getSpecialist()+"</p>              <p><strong>Location:</strong> "+schedulerHospitalTiming.getLocation()+"</p>          </div>         " +
+                "   <p></p>        " +
+                "          <p>Thank you for your assistance!</p>            <p>Best Regards,<br>EasyMed<br></p>          " +
+                "  <div><img src='cid:logoImage' alt='Logo' style='position: absolute;  width: 100px; height: auto;' /></div>        " +
+                "    <div class=  'footer  '>              <p>This is a request for scheduling an appointment. " +
+                "Please ensure the details are correct before confirmation.</p>          </div>      </div>  </body>  </html>  ";
+    }
+
+
+    public static String getRescheduleAppoinmentConfmTemplate(AppointmentDetails appointmentDetails){
+        return "   <html lang='en'>    " +
+                "     <head>             <meta charset='UTF-8'>     " +
+                "            <meta name='viewport' content='width=device-width, initial-scale=1.0'>    " +
+                "                 <title>Appointment Rescheduled</title>                     <style>                    " +
+                "     body {                             font - family: Arial, sans-serif;                    " +
+                "     background-color: #f4f4f4;                         margin: 0;                         padding: 20px;   " +
+                "" +
+                "      }                         .container {                             background - color: #ffffff;     " +
+                "                    padding: 20px;                         margin: auto;                      " +
+                "   max-width: 600px;                         border-radius: 8px;                      " +
+                "   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);         }                         h2 {                             color: #333333;         }                         p {                             line - height: 1.6;                         color: #555555;         }                         .appointment-details {                             margin: 20px 0;         }                         .appointment-details p {                             margin: 5px 0;         }    " +
+                "                     .footer {                             margin - top: 30px;                         font-size: 12px;         " +
+                "                color: #888888;         }                     </style>                 </head>                 <body> " +
+                "                    <div class='container'>                         <h2>Your EasyMed Appointment has been Rescheduled to "+appointmentDetails.getDate() +" " + appointmentDetails.getTime()+"</h2>                          <p>Dear "+appointmentDetails.getPatientName()+",</p>                         " +
+                " <p>Thank you for booking your appointment with "+ appointmentDetails.getHospitalName()+". We are pleased to confirm your appointment as follows:</p>   " +
+                "                       <div class='appointment-details'>                             <p><strong>Booking ID:</strong> "+appointmentDetails.getBookingId()+"</p>   <p><strong>Date:</strong> "+appointmentDetails.getDate()+"</p>  " +
+                "                           <p><strong>Time:</strong> "+appointmentDetails.getTime()+"</p>                         " +
+                "    <p><strong>Doctor/Provider:</strong> Dr. "+appointmentDetails.getDocName()+"</p>                           " +
+                "  <p><strong>Department/Specialty:</strong> "+appointmentDetails.getSpecialist()+"</p>                           " +
+                "  <p><strong>Location:</strong> "+appointmentDetails.getLocation()+"</p>                         </div>       " +
+                "                   <p>Please arrive 15 minutes prior to your scheduled appointment time to complete any necessary paperwork. Remember to bring your insurance card and a valid photo ID.</p>         " +
+                "                 <p>If you have any questions or need to reschedule, please contact us at 044 - 24356282 or email EasyMed@gmail.com.</p>  " +
+                "                        <p>We look forward to seeing you soon!</p>                        " +
+                "   <div style='color : black'> Kind regards,</br></br ></div >                 <div style='color : black'>EasyMed</br></br ></br ></div >" +
+                " </br > <div><img src='cid:logoImage' alt='Logo' style='position: absolute;  width: 100px; height: auto;' /></div>     " +
+                "<div class='footer'>         <p>This is an automated message, please do not reply to this email.</p>     </div> </div> </body ></html >";
+    }
+
+    public static String getRescheduleAppoinmentConfmDoctorTemplate(AppointmentDetails appointmentDetails){
+        return "   <!DOCTYPE html>  <html lang=  'en  '>  " +
+                "     <head>             <meta charset='UTF-8'/>      " +
+                "                            <meta name='viewport' content='width=device-width, initial-scale=1.0'>     " +
+                "                                 <title>Appointment Rescheduling Request</title>                     <style>                     " +
+                "                     body {                             font - family: Arial, sans-serif;                     " +
+                "                     background-color: #f4f4f4;                         margin: 0;                         padding: 20px;    " +
+                "                 " +
+                "                      }                         .container {                             background - color: #ffffff;      " +
+                "                                    padding: 20px;                         margin: auto;                       " +
+                "                   max-width: 600px;                         border-radius: 8px;                       " +
+                "                   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);         }                         h2 {                             color: #333333;         }                         p {                             line - height: 1.6;                         color: #555555;         }                         .appointment-details {                             margin: 20px 0;         }                         .appointment-details p {                             margin: 5px 0;         }     " +
+                "                                     .footer {                             margin - top: 30px;                         font-size: 12px;          " +
+                "                                color: #888888;         }                     </style>                 </head>   <body>     " +
+                " <div class=  'container  '>          <h2>Appointment Rescheduling Request</h2>            <p>Hello,</p>        " +
+                "    <p>I hope you’re doing well. Please reschedule an appointment for the following patient:</p>           " +
+                " <div class=  'appointment-details  '>              <p><strong>Patient Name:</strong> "+appointmentDetails.getPatientName()+"</p>             " +
+                " <p><strong>Preferred Date:</strong> "+appointmentDetails.getDate()+"</p>              <p><strong>Preferred Time:</strong> "+appointmentDetails.getTime()+"</p>        " +
+                "      <p><strong>Doctor/Provider:</strong> Dr. "+appointmentDetails.getDocName()+"</p>              <p><strong>Department/Specialty:</strong>" +
+                " "+appointmentDetails.getSpecialist()+"</p>              <p><strong>Location:</strong> "+appointmentDetails.getLocation()+"</p>          </div>         " +
+                "   <p>Please confirm the appointment or provide alternative options if the preferred slot is unavailable. Let me know once the appointment is booked.</p>        " +
+                "          <p>Thank you for your assistance!</p>            <p>Best Regards,<br>EasyMed<br></p>          " +
+                "  <div><img src='cid:logoImage' alt='Logo' style='position: absolute;  width: 100px; height: auto;' /></div>        " +
+                "    <div class=  'footer  '>              <p>This is a request for scheduling an appointment. " +
+                "Please ensure the details are correct before confirmation.</p>          </div>      </div>  </body>  </html>  ";
     }
 }

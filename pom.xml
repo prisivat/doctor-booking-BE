@@ -54,8 +54,12 @@
 			<artifactId>xmlworker</artifactId>
 			<version>5.4.1</version>
 		</dependency>
-
-
+		<!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
+		<dependency>
+			<groupId>edu.stanford.nlp</groupId>
+			<artifactId>stanford-corenlp</artifactId>
+			<version>4.5.7</version>
+		</dependency>
 		<!-- Flying Saucer PDF renderer -->
 		<dependency>
 			<groupId>org.xhtmlrenderer</groupId>

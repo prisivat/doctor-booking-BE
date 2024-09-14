@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 public interface SchedulerDetailRepositroy extends MongoRepository<SchedulerDetails, String> {
 
-    SchedulerDetails findByHospitalNameAndLocation(String hospitalNAme, String location);
+    SchedulerDetails findByHospitalNameAndLocation(String hospitalName, String location);
 
 
 }
