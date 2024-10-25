@@ -38,6 +38,8 @@ public class SchedulerHospitalTimingServiceImpl implements SchedulerHospitalTimi
     public void bookAppointment(AppointmentDetails appointmentDetails) throws MessagingException, TemplateException, IOException, DocumentException {
         User user = userRepository.findByUserName(appointmentDetails.getUserName());
         setBookingId(appointmentDetails);
+        String email = hospitalDetailsRepository.findEmailByLocationAndHospitalName(appointmentDetails.getLocation(), appointmentDetails.getHospitalName());
+        appointmentDetails.setSchedulerEmail(email);
         appointmentDetailsRepository.save(appointmentDetails);// this is Patient DB
         SchedulerHospitalTiming schedulerHospitalTiming = new SchedulerHospitalTiming();
         schedulerHospitalTiming.setLocation(appointmentDetails.getLocation());

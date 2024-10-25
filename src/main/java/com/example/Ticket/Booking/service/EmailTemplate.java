@@ -26,6 +26,7 @@ public class EmailTemplate {
                 "                                 We’ve received a request to reset your EasyMed password.<br/><br/></div>  " +
                 "                               <div> <span style = 'color: black'> Access Token: <b>"+accessToken+"</b></span></br></br></br></div> " +
                 "                                 <div style = 'color: black'> 'Note: Token valid for 10 minutes. ' <br/><br/>Your password should have 8 or more characters with at least one uppercase letter, lowercase letter, number and special character. <br/><br/>  " +
+                " <a href='http://localhost:3000/resetPassword'>Reset Password</a><br/><br/>" +
                 "                                 If you have any queries, please contact the help desk. </div>  <br/><br/>  " +
                 "                                <div style = 'color : black'> Kind regards,</br></br></div>  " +
                 "                                 <div style = 'color : black'>EasyMed</br></br></br></div>  " +
