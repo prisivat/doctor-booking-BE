@@ -80,21 +80,21 @@ public class HospitalDetailsServiceImpl implements HospitalDetailsService{
 
     private HospitalDetails filterHospDetails(FilterDetails filterDetails){
         HospitalDetails hospitalDetails;
-        if(Objects.nonNull(filterDetails.getSpecialist()) && Objects.nonNull(filterDetails.getHospitalName()) && Objects.nonNull(filterDetails.getCost())){
+        if(Objects.nonNull(filterDetails.getSpecialist()) && filterDetails.getSpecialist().size() != 0 && Objects.nonNull(filterDetails.getHospitalName()) && filterDetails.getHospitalName().size() != 0 && Objects.nonNull(filterDetails.getCost())){
 //            hospitalDetails = hospitalDetailsRepository.findByFilters(filterDetails.getLocation(), filterDetails.getSpecialist(), filterDetails.getHospitalName(), filterDetails.getCost());
             hospitalDetails = hospitalDetailsRepository.findByLocationAndHospitalNameAndSpecialist(filterDetails.getLocation(), filterDetails.getHospitalName(), filterDetails.getSpecialist());
             hospitalDetails = costFilter(hospitalDetails, filterDetails);
-        } else if (Objects.nonNull(filterDetails.getSpecialist()) && Objects.nonNull(filterDetails.getHospitalName())) {
+        } else if (Objects.nonNull(filterDetails.getSpecialist()) && filterDetails.getSpecialist().size() != 0 && Objects.nonNull(filterDetails.getHospitalName()) && filterDetails.getHospitalName().size() != 0) {
            hospitalDetails = hospitalDetailsRepository.findByLocationAndHospitalNameAndSpecialist(filterDetails.getLocation(), filterDetails.getHospitalName(), filterDetails.getSpecialist());
-        } else if (Objects.nonNull(filterDetails.getSpecialist()) && Objects.nonNull(filterDetails.getCost())) {
+        } else if (Objects.nonNull(filterDetails.getSpecialist()) && filterDetails.getSpecialist().size() != 0 && Objects.nonNull(filterDetails.getCost())) {
             hospitalDetails = hospitalDetailsRepository.findByLocationAndSpcName(filterDetails.getLocation(), filterDetails.getSpecialist());
             hospitalDetails = costFilter(hospitalDetails, filterDetails);
-        } else if(Objects.nonNull(filterDetails.getHospitalName()) && Objects.nonNull(filterDetails.getCost())){
+        } else if(Objects.nonNull(filterDetails.getHospitalName()) && filterDetails.getHospitalName().size() != 0 && Objects.nonNull(filterDetails.getCost())){
            hospitalDetails = hospitalDetailsRepository.findByLocationAndHospitalName(filterDetails.getLocation(), filterDetails.getHospitalName());
             hospitalDetails = costFilter(hospitalDetails, filterDetails);
-        } else if(Objects.nonNull(filterDetails.getHospitalName())){
+        } else if(Objects.nonNull(filterDetails.getHospitalName()) && filterDetails.getHospitalName().size() != 0){
             hospitalDetails = hospitalDetailsRepository.findByLocationAndHospitalName(filterDetails.getLocation(), filterDetails.getHospitalName());
-        }  else if(Objects.nonNull(filterDetails.getSpecialist()) ){
+        }  else if(Objects.nonNull(filterDetails.getSpecialist()) && filterDetails.getSpecialist().size() != 0){
             hospitalDetails = hospitalDetailsRepository.findByLocationAndSpcName(filterDetails.getLocation(), filterDetails.getSpecialist());
         } else {
             hospitalDetails = hospitalDetailsRepository.findByLocation(filterDetails.getLocation());

@@ -11,6 +11,8 @@ public interface SchedulerHospitalTimingRepository extends MongoRepository<Sched
 
     List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndSpecialistAndDocNameAndDate(String location, String hospitalName, String specialist, String docName, String date);
 
+    List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndDocNameAndDateGreaterThan(String location, String hospitalName, String docName, String date);
+
     List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndDateGreaterThanEqual(String location, String hospitalName, String date);
 
     List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndDate(String location, String hospitalName, String date);
@@ -20,4 +22,6 @@ public interface SchedulerHospitalTimingRepository extends MongoRepository<Sched
     void deleteByBookingIdAndPatientName(String bookingId, String patientName);
 
     SchedulerHospitalTiming findByBookingIdAndPatientName(String bookingId, String patientName);
+
+    List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndDateGreaterThan(String location, String hospitalName, String bookingDate);
 }

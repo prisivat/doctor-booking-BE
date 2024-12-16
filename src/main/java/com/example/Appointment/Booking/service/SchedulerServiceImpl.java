@@ -126,6 +126,7 @@ public class SchedulerServiceImpl implements SchedulerService{
             LocalDateTime localDateTime = zonedDateTime.toLocalDateTime();
             schedulerMailOtpDetails.setCreatedAt(String.valueOf(localDateTime));
             schedulerMailOtpDetails.setLocation(schedulerDetails.getLocation());
+            schedulerMailOtpDetails.setHospitalName(schedulerDetails.getHospitalName());
             String otp = getOTP();
             schedulerMailOtpDetails.setOtp(otp);
             schedulerOTPRepository.save(schedulerMailOtpDetails);

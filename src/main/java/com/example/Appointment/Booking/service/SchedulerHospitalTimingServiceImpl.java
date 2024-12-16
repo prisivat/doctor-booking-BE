@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -129,12 +126,12 @@ public class SchedulerHospitalTimingServiceImpl implements SchedulerHospitalTimi
     }
 
     @Override
-    public SchedulerHospitalTiming cancelBooking(String bookingId, String patientName) throws MessagingException {
-        SchedulerHospitalTiming schedulerHospitalTiming = schedulerHospitalTimingRepository.findByBookingIdAndPatientName(bookingId, patientName);
+    public SchedulerHospitalTiming cancelBooking(String bookingId) throws MessagingException {
+        SchedulerHospitalTiming schedulerHospitalTiming = schedulerHospitalTimingRepository.findByBookingId(bookingId);
         String email = hospitalDetailsRepository.findEmailByLocationAndHospitalName(schedulerHospitalTiming.getLocation(), schedulerHospitalTiming.getHospitalName());
         User user = userRepository.findByUserName(schedulerHospitalTiming.getUserName());
-        schedulerHospitalTimingRepository.deleteByBookingIdAndPatientName(bookingId, patientName);
-        appointmentDetailsRepository.deleteByBookingIdAndPatientName(bookingId, patientName);
+        schedulerHospitalTimingRepository.deleteByBookingIdAndPatientName(bookingId, schedulerHospitalTiming.getPatientName());
+        appointmentDetailsRepository.deleteByBookingIdAndPatientName(bookingId, schedulerHospitalTiming.getPatientName());
         emailService.sendCancelledMailToPatient(schedulerHospitalTiming, user);
         emailService.sendCancelledMailToHospital(schedulerHospitalTiming, email);
 
@@ -161,6 +158,28 @@ public class SchedulerHospitalTimingServiceImpl implements SchedulerHospitalTimi
         emailService.sentRescheduleAppointmentDtlsToHospital(appointmentDetails);
         emailService.sentRescheduleAppointmentDtlsToPatient(appointmentDetails, user);
         return null;
+    }
+
+    @Override
+    public List<SchedulerHospitalTiming> getFilteredApp(SchedulerHospitalTiming schedulerDetails) {
+        Date date = new Date();
+//        if(schedulerDetails.getDate() != "") {
+//            date = parse.dateschedulerDetails.getDate();
+//        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String bookingDate = simpleDateFormat.format(date);
+        List<SchedulerHospitalTiming> schedulerHospitalTimings = new ArrayList<>();
+        if(!schedulerDetails.getDocName().equalsIgnoreCase("all")){
+            schedulerHospitalTimings = schedulerHospitalTimingRepository.findByLocationAndHospitalNameAndDocNameAndDateGreaterThan(schedulerDetails.getLocation(), schedulerDetails.getHospitalName(), schedulerDetails.getDocName(), bookingDate);
+        }  else{
+            schedulerHospitalTimings = schedulerHospitalTimingRepository.findByLocationAndHospitalNameAndDateGreaterThan(schedulerDetails.getLocation(), schedulerDetails.getHospitalName(), bookingDate);
+        }
+
+         if ( Objects.nonNull(schedulerDetails.getDate()) && !schedulerDetails.getDate().equalsIgnoreCase("")) {
+             schedulerHospitalTimings.stream().filter(e -> e.getDate().equals(schedulerDetails.getDate()));
+         }
+        return schedulerHospitalTimings;
+
     }
 
     private void setBookingId(AppointmentDetails appointmentDetails) {

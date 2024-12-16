@@ -90,6 +90,12 @@ public class SchedulerHospitalTimingController {
         return new ResponseEntity<>(schedulerHospitalTimings, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/scheduler-filter")
+    public ResponseEntity<List<SchedulerHospitalTiming>> filterApp(@RequestBody SchedulerHospitalTiming schedulerDetails){
+        List<SchedulerHospitalTiming> schedulerHospitalTimings = schedulerHospitalTimingService.getFilteredApp(schedulerDetails);
+        return new ResponseEntity<>(schedulerHospitalTimings, HttpStatus.OK);
+    }
+
     /**
      *
      * @param bookingId
@@ -106,7 +112,7 @@ public class SchedulerHospitalTimingController {
      */
     @PostMapping(value = "/cancel-booking")
     public ResponseEntity<String> cancelBooking(@RequestBody SchedulerHospitalTiming schedulerHospitalTiming) throws MessagingException {
-        SchedulerHospitalTiming message = schedulerHospitalTimingService.cancelBooking(schedulerHospitalTiming.getBookingId(), schedulerHospitalTiming.getPatientName());
+        SchedulerHospitalTiming message = schedulerHospitalTimingService.cancelBooking(schedulerHospitalTiming.getBookingId());
 
         return new ResponseEntity<>("Cancelled Successfully", HttpStatus.OK);
     }
@@ -118,7 +124,7 @@ public class SchedulerHospitalTimingController {
     public ResponseEntity<String> reschedulingBooking(@RequestBody SchedulerHospitalTiming schedulerHospitalTiming) throws MessagingException, TemplateException, DocumentException, IOException {
         SchedulerHospitalTiming schedulerHospitalTiming1 = schedulerHospitalTimingService.reschedulingBooking(schedulerHospitalTiming);
 
-        return new ResponseEntity<>("Cancelled Successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Rescheduled Successfully", HttpStatus.OK);
 
     }
 

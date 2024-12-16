@@ -28,7 +28,9 @@ public interface SchedulerHospitalTimingService {
 
     SchedulerHospitalTiming getPatientDtlsByBookingId(String bookingId);
 
-    SchedulerHospitalTiming cancelBooking(String bookingId, String patientName) throws MessagingException;
+    SchedulerHospitalTiming cancelBooking(String bookingId) throws MessagingException;
 
     SchedulerHospitalTiming reschedulingBooking(SchedulerHospitalTiming schedulerHospitalTiming) throws MessagingException, TemplateException, IOException, DocumentException;
+
+    List<SchedulerHospitalTiming> getFilteredApp(SchedulerHospitalTiming schedulerDetails);
 }
