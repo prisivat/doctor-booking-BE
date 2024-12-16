@@ -3,7 +3,7 @@ package com.example.Appointment.Booking.service;
 import com.example.Appointment.Booking.model.FilterDetails;
 import com.example.Appointment.Booking.model.HospitalDetails;
 import com.example.Appointment.Booking.model.HospitalDtlBySpclty;
-import com.example.Appointment.Booking.model.SpecalistName;
+import com.example.Appointment.Booking.model.SpecialistName;
 import com.example.Appointment.Booking.model.*;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface HospitalDetailsService {
 
     Set<String> getListOfSpclName(String location);
 
-    List<HospitalDtlBySpclty> getSpecalistDetails(SpecalistName spclList);
+    List<HospitalDtlBySpclty> getSpecialistDetails(SpecialistName spclList);
 
     FilterDetails getFltrDtlsByLocation(String location);
 

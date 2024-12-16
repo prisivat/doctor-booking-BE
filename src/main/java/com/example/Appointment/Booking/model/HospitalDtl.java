@@ -10,5 +10,5 @@ import java.util.List;
 @NoArgsConstructor
 public class HospitalDtl {
     private String name;
-    private List<Specalist> specalist = new ArrayList<>(); ;
+    private List<Specialist> specialist = new ArrayList<>(); ;
 }

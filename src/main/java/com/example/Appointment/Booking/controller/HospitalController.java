@@ -51,15 +51,15 @@ public class HospitalController {
     }
 
     @PostMapping(value = "/specialistName")
-    public ResponseEntity <Set<String>> getSpecalistDetails(@Valid @RequestBody String location){
+    public ResponseEntity <Set<String>> getSpecialistDetails(@Valid @RequestBody String location){
         Set<String> specialistDtls = hospitalDetailsService.getListOfSpclName(location);
 
         return new ResponseEntity<>(specialistDtls, HttpStatus.OK);
     }
 
     @PostMapping(value = "/specialist")
-    public ResponseEntity<List<HospitalDtlBySpclty>> fetchListOfSpecialist(@Valid @RequestBody SpecalistName spclList){
-        List<HospitalDtlBySpclty> listOfHoDtls = hospitalDetailsService.getSpecalistDetails(spclList);
+    public ResponseEntity<List<HospitalDtlBySpclty>> fetchListOfSpecialist(@Valid @RequestBody SpecialistName spclList){
+        List<HospitalDtlBySpclty> listOfHoDtls = hospitalDetailsService.getSpecialistDetails(spclList);
         return new ResponseEntity<>(listOfHoDtls, HttpStatus.OK);
 
     }

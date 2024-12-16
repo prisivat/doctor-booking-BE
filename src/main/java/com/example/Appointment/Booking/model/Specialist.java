@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class Specalist {
+public class Specialist {
     private String spclName;
     private List<DoctorsList> doctorsList = new ArrayList<>(); ;
 }

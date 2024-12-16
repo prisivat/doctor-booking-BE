@@ -32,20 +32,20 @@ public class HospitalDetailsCustomRepositoryImpl implements HospitalDetailsCusto
             operations.add(match(Criteria.byExample(new Document("hospitalDetails.name", new Document("$in", hospitalNames)))));
 
 
-        // Unwind the specalist array within hospitalDetails
-        operations.add(unwind("hospitalDetails.specalist"));
+        // Unwind the specialist array within hospitalDetails
+        operations.add(unwind("hospitalDetails.specialist"));
 
         // Optional match on specialist name
-            operations.add(match(Criteria.byExample(new Document("hospitalDetails.specalist.spclName", new Document("$in", spclName)))));
+            operations.add(match(Criteria.byExample(new Document("hospitalDetails.specialist.spclName", new Document("$in", spclName)))));
 
-        // Unwind the doctorsList array within specalist
-        operations.add(unwind("hospitalDetails.specalist.doctorsList"));
+        // Unwind the doctorsList array within specialist
+        operations.add(unwind("hospitalDetails.specialist.doctorsList"));
 
         // Unwind the docNameAndAvblTime array within doctorsList
-        operations.add(unwind("hospitalDetails.specalist.doctorsList.docNameAndAvblTime"));
+        operations.add(unwind("hospitalDetails.specialist.doctorsList.docNameAndAvblTime"));
 
         // Optional match on cost
-        operations.add(match(Criteria.byExample(new Document("hospitalDetails.specalist.doctorsList.docNameAndAvblTime.cost", new Document("$lte", maxCost)))));
+        operations.add(match(Criteria.byExample(new Document("hospitalDetails.specialist.doctorsList.docNameAndAvblTime.cost", new Document("$lte", maxCost)))));
 
         // Group the data back into the original structure
         operations.add(group("_id")

@@ -7,6 +7,6 @@ import java.util.List;
 @Data
 public class HospitalDtlBySpclty {
 private String hospitalName;
-private List<Specalist> specalists;
+private List<Specialist> specialists;
 
 }

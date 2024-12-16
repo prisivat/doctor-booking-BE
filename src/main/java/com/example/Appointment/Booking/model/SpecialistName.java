@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 @Data
-public class SpecalistName {
+public class SpecialistName {
     private String location;
-    private Set<String> specalistName;
+    private Set<String> specialistName;
 }

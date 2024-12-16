@@ -27,9 +27,9 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
                     "as: 'hospital', " +
                     "in: { " +
                     "'name': '$$hospital.name', " +
-                    "'specalist': { $map: { " +
+                    "'specialist': { $map: { " +
                     "input: { $filter: { " +
-                    "input: '$$hospital.specalist', " +
+                    "input: '$$hospital.specialist', " +
                     "as: 'spec', " +
                     "cond: { $and: [ " +
                     "{ $in: ['$$spec.spclName', ?1] }, " +
@@ -50,7 +50,7 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
                     "} " +
                     "} } } }"
     })
-    HospitalDetails findByLocationAndSpecalistAndHospitalNameAndCost(String location, Set<String> spclName, List<String> name, Integer cost );
+    HospitalDetails findByLocationAndSpecialistAndHospitalNameAndCost(String location, Set<String> spclName, List<String> name, Integer cost );
 
     @Aggregation(pipeline = {
             "{ $match: { 'location': ?0 } }",
@@ -65,15 +65,15 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
                     "as: 'hospital', " +
                     "in: { " +
                     "'name': '$$hospital.name', " +
-                    "'specalist': { $filter: { " +
-                    "input: '$$hospital.specalist', " +
+                    "'specialist': { $filter: { " +
+                    "input: '$$hospital.specialist', " +
                     "as: 'spec', " +
                     "cond: { $in: ['$$spec.spclName', ?2] } " +
                     "} } " +
                     "} " +
                     "} } } }"
     })
-    HospitalDetails findByLocationAndHospitalNameAndSpecalist(String location, List<String> name , Set<String> spclName);//working
+    HospitalDetails findByLocationAndHospitalNameAndSpecialist(String location, List<String> name , Set<String> spclName);//working
 
 
     @Aggregation(pipeline = {
@@ -86,14 +86,14 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
                     "cond: { " +
                     "{ $gt: [ " +
                     "{ $size: { $filter: { " +
-                    "input: '$$hospital.specalist', " +
+                    "input: '$$hospital.specialist', " +
                     "as: 'spec', " +
                     "cond: { $in: ['$$spec.spclName', ?1] } " + // Filter by specialist names
                     "} } }, 0] }, " +
                     "{ $lte: [ " +
                     "{ $min: { $map: { " +
                     "input: { $reduce: { " +
-                    "input: '$$hospital.specalist', " +
+                    "input: '$$hospital.specialist', " +
                     "initialValue: [], " +
                     "in: { $concatArrays: ['$$value', '$$this.doctorsList.docNameAndAvblTime'] } " +
                     "} }, " +
@@ -105,7 +105,7 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
                     "} } " +
                     "} }"
     })
-    HospitalDetails findByLocationAndSpecalistAndCost(String location, Set<String> spclName,  Integer cost );
+    HospitalDetails findByLocationAndSpecialistAndCost(String location, Set<String> spclName,  Integer cost );
 
 
     @Aggregation(pipeline = {
@@ -119,7 +119,7 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
                     "{ $in: ['$$hospital.name', ?1] }, " +
                     "{ $gt: [ " +
                     "{ $size: { $filter: { " +
-                    "input: '$$hospital.specalist', " +
+                    "input: '$$hospital.specialist', " +
                     "as: 'spec', " +
                     "cond: { $and: [ " +
                     "{ $in: ['$$spec.spclName', ?3] }, " +
@@ -148,9 +148,9 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
 //                    "input: '$hospitalDetails', " +
 //                    "as: 'hospital', " +
 //                    "cond: { $and: [ " +
-//                    "{ $in: ['$$hospital.specalist.spclName', ?1] }, " +
+//                    "{ $in: ['$$hospital.specialist.spclName', ?1] }, " +
 //                    "{ $in: ['$$hospital.name', ?2] }, " +
-//                    "{ $lte: [ { $min: '$$hospital.specalist.doctorsList.docNameAndAvblTime.cost' }, ?3 ] } " +
+//                    "{ $lte: [ { $min: '$$hospital.specialist.doctorsList.docNameAndAvblTime.cost' }, ?3 ] } " +
 //                    "] } " +
 //                    "} } } }"
 //    })
@@ -165,8 +165,8 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
                     "as: 'hospital', " +
                     "in: { " +
                     "'name': '$$hospital.name', " +
-                    "'specalist': { $filter: { " +
-                    "input: '$$hospital.specalist', " +
+                    "'specialist': { $filter: { " +
+                    "input: '$$hospital.specialist', " +
                     "as: 'spec', " +
                     "cond: { $in: ['$$spec.spclName', ?1] } " +
                     "} } " +
@@ -183,7 +183,7 @@ public interface HospitalDetailsRepository extends MongoRepository<HospitalDetai
                     "'hospitalDetails': { $filter: { " +
                     "input: '$hospitalDetails', " +
                     "as: 'hospital', " +
-                    "cond: { $gte: [ { $min: '$$hospital.specalist.doctorsList.docNameAndAvblTime.cost' }, ?1 ] } " +
+                    "cond: { $gte: [ { $min: '$$hospital.specialist.doctorsList.docNameAndAvblTime.cost' }, ?1 ] } " +
                     "} } } }"
     })
     HospitalDetails findByLocationAndCost(String  location, Integer cost);
