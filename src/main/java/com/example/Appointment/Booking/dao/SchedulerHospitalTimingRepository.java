@@ -11,7 +11,7 @@ public interface SchedulerHospitalTimingRepository extends MongoRepository<Sched
 
     List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndSpecialistAndDocNameAndDate(String location, String hospitalName, String specialist, String docName, String date);
 
-    List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndDocNameAndDateGreaterThan(String location, String hospitalName, String docName, String date);
+    List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndDocNameAndDateGreaterThanEqual(String location, String hospitalName, String docName, String date);
 
     List<SchedulerHospitalTiming> findByLocationAndHospitalNameAndDateGreaterThanEqual(String location, String hospitalName, String date);
 

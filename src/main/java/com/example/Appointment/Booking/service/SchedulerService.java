@@ -11,5 +11,5 @@ public interface SchedulerService {
 
     void schedulerSignIn(SchedulerDetails schedulerDetails);
 
-    void schedulerLogin(SchedulerDetails schedulerDetails);
+    String schedulerLogin(SchedulerDetails schedulerDetails);
 }

@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/appointment")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SchedulerHospitalTimingController {
 
     @Autowired

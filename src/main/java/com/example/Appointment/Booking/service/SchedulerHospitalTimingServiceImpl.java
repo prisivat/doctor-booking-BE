@@ -133,7 +133,9 @@ public class SchedulerHospitalTimingServiceImpl implements SchedulerHospitalTimi
         schedulerHospitalTimingRepository.deleteByBookingIdAndPatientName(bookingId, schedulerHospitalTiming.getPatientName());
         appointmentDetailsRepository.deleteByBookingIdAndPatientName(bookingId, schedulerHospitalTiming.getPatientName());
         emailService.sendCancelledMailToPatient(schedulerHospitalTiming, user);
-        emailService.sendCancelledMailToHospital(schedulerHospitalTiming, email);
+        if(email.contains("@gmail")) {
+            emailService.sendCancelledMailToHospital(schedulerHospitalTiming, email);
+        }
 
         return schedulerHospitalTiming;
     }
@@ -155,7 +157,9 @@ public class SchedulerHospitalTimingServiceImpl implements SchedulerHospitalTimi
         schedulerHospitalTimingRepository.deleteByBookingIdAndPatientName(schedulerHospitalTiming.getBookingId(), schedulerHospitalTiming.getPatientName());
         appointmentDetailsRepository.deleteByBookingIdAndPatientName(schedulerHospitalTiming.getBookingId(), schedulerHospitalTiming.getPatientName());
 
-        emailService.sentRescheduleAppointmentDtlsToHospital(appointmentDetails);
+        if(appointmentDetails.getSchedulerEmail().contains("@gmail.com")) {
+            emailService.sentRescheduleAppointmentDtlsToHospital(appointmentDetails);
+        }
         emailService.sentRescheduleAppointmentDtlsToPatient(appointmentDetails, user);
         return null;
     }
@@ -169,10 +173,11 @@ public class SchedulerHospitalTimingServiceImpl implements SchedulerHospitalTimi
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String bookingDate = simpleDateFormat.format(date);
         List<SchedulerHospitalTiming> schedulerHospitalTimings = new ArrayList<>();
+        schedulerHospitalTimings = schedulerHospitalTimingRepository.findAll();
         if(!schedulerDetails.getDocName().equalsIgnoreCase("all")){
-            schedulerHospitalTimings = schedulerHospitalTimingRepository.findByLocationAndHospitalNameAndDocNameAndDateGreaterThan(schedulerDetails.getLocation(), schedulerDetails.getHospitalName(), schedulerDetails.getDocName(), bookingDate);
+            schedulerHospitalTimings = schedulerHospitalTimingRepository.findByLocationAndHospitalNameAndDocNameAndDateGreaterThanEqual(schedulerDetails.getLocation(), schedulerDetails.getHospitalName(), schedulerDetails.getDocName(), bookingDate);
         }  else{
-            schedulerHospitalTimings = schedulerHospitalTimingRepository.findByLocationAndHospitalNameAndDateGreaterThan(schedulerDetails.getLocation(), schedulerDetails.getHospitalName(), bookingDate);
+            schedulerHospitalTimings = schedulerHospitalTimingRepository.findByLocationAndHospitalNameAndDateGreaterThanEqual(schedulerDetails.getLocation(), schedulerDetails.getHospitalName(), bookingDate);
         }
 
          if ( Objects.nonNull(schedulerDetails.getDate()) && !schedulerDetails.getDate().equalsIgnoreCase("")) {

@@ -106,15 +106,15 @@ public class SchedulerServiceImpl implements SchedulerService{
     }
 
     @Override
-    public void schedulerLogin(SchedulerDetails schedulerDetails) {
+    public String schedulerLogin(SchedulerDetails schedulerDetails) {
         String hospitalEmail = hospitalDetailsRepository.findEmailByLocationAndHospitalName(schedulerDetails.getLocation(), (schedulerDetails.getHospitalName()));
         SchedulerDetails schedulerDetails1 = schedulerDetailRepositroy.findByHospitalNameAndLocation(schedulerDetails.getHospitalName(), schedulerDetails.getLocation());
         if(Objects.isNull(schedulerDetails1)){
-            throw new SchedulerNotAvailableException("Scheduler not found");
+           return ("Scheduler not found");
         } else{
             String password = passwordEncryptDecryptService.passwordSchedulerDecryption(schedulerDetails1.getPassword());
             if(!password.equals(schedulerDetails.getPassword())) {
-                throw new PasswordIncorrectException("Password is incorrect. Please give correct password or reset your password by clicking forgot password");
+                 return ("Password is incorrect. Please give correct password or reset your password by clicking forgot password");
             }
             List<SchedulerOTP> userExist = schedulerOTPRepository.findByHospitalNameAndLocation(schedulerDetails.getHospitalName(), schedulerDetails.getLocation());
             if (userExist.size() > 0) {
@@ -136,6 +136,7 @@ public class SchedulerServiceImpl implements SchedulerService{
                 throw new RuntimeException(e);
             }
         }
+        return "Login Successfull";
     }
 
     public String getOTP(){

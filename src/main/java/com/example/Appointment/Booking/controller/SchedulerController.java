@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/scheduler")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SchedulerController {
 
     @Autowired
@@ -73,8 +73,8 @@ public class SchedulerController {
     @PostMapping("/scheduler-login")
     public ResponseEntity<String> login(@Valid @RequestBody SchedulerDetails schedulerDetails) throws Exception {
         try {
-            schedulerService.schedulerLogin(schedulerDetails);
-            return new ResponseEntity<>("Login successful", HttpStatus.OK);
+            String resp = schedulerService.schedulerLogin(schedulerDetails);
+            return new ResponseEntity<>(resp, HttpStatus.OK);
         } catch (PasswordIncorrectException e) {
             throw new PasswordIncorrectException("Password is incorrect. Please give correct password or reset your password by clicking forgot password");
         }
